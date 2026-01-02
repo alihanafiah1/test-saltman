@@ -1,5 +1,10 @@
 import * as core from "@actions/core";
 import * as github from "@actions/github";
+import { getContextValues } from "./getContextValues";
+import { validateUserAccess } from "./validateUserAccess";
+import { validatePullRequestAccess } from "./validatePullRequestAccess";
+import { analyzePR } from "./analyzePR";
+import { getPullRequestFiles } from "./getPullRequestFiles";
 
 async function run(): Promise<void> {
   try {
@@ -10,121 +15,25 @@ async function run(): Promise<void> {
     const octokit = github.getOctokit(token);
     const context = github.context;
 
+    const { prNumber, username } = getContextValues({ context });
+
     const owner = context.repo.owner;
     const repo = context.repo.repo;
 
-    // Determine the user to check permissions for
-    let username: string;
-    let prNumber: number | undefined;
+    await validateUserAccess({ octokit, owner, repo, username });
+    await validatePullRequestAccess({ octokit, owner, repo, prNumber });
 
-    if (context.payload.pull_request) {
-      // PR event - check PR author
-      prNumber = context.payload.pull_request.number;
-      username = context.payload.pull_request.user.login;
-    } else {
-      core.setFailed("This action must be run on a pull request event");
-      return;
-    }
+    const files = await getPullRequestFiles({ octokit, owner, repo, prNumber });
 
-    // Check if user has write access to the repository
-    try {
-      const { data: permission } = await octokit.rest.repos.getCollaboratorPermissionLevel({
-        owner,
-        repo,
-        username,
-      });
-
-      const hasWriteAccess =
-        permission.permission === "write" ||
-        permission.permission === "maintain" ||
-        permission.permission === "admin";
-
-      if (!hasWriteAccess) {
-        core.info(
-          `User ${username} does not have write access to ${owner}/${repo}. Skipping action.`,
-        );
-        return;
-      }
-
-      core.info(`User ${username} has ${permission.permission} access. Proceeding with action.`);
-    } catch (error) {
-      // If we can't check permissions (e.g., user is not a collaborator), skip
-      // Octokit errors have a `status` property for HTTP status codes
-      if (error && typeof error === "object" && "status" in error && error.status === 404) {
-        core.info(
-          `User ${username} is not a collaborator or does not have write access. Skipping action.`,
-        );
-        return;
-      }
-      throw error;
-    }
-
-    // Fetch PR details (we know prNumber is defined here since we validated it above)
-    let pr;
-    try {
-      const response = await octokit.rest.pulls.get({
-        owner,
-        repo,
-        pull_number: prNumber!,
-      });
-      pr = response.data;
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message.includes("Resource not accessible by integration")
-      ) {
-        core.setFailed(
-          "Permission denied: The GitHub token does not have sufficient permissions. " +
-            "Please ensure the workflow has 'pull-requests: read' permission. " +
-            "Add this to your workflow:\n" +
-            "permissions:\n" +
-            "  pull-requests: write\n" +
-            "  contents: read\n" +
-            "  issues: write",
-        );
-        return;
-      }
-      throw error;
-    }
-
-    // Fetch PR files
-    let files;
-    try {
-      const response = await octokit.rest.pulls.listFiles({
-        owner,
-        repo,
-        pull_number: prNumber!,
-      });
-      files = response.data;
-    } catch (error) {
-      if (
-        error instanceof Error &&
-        error.message.includes("Resource not accessible by integration")
-      ) {
-        core.setFailed(
-          "Permission denied: The GitHub token does not have sufficient permissions to list PR files. " +
-            "Please ensure the workflow has 'pull-requests: read' permission.",
-        );
-        return;
-      }
-      throw error;
-    }
-
-    // Process/analyze PR content
-    const analysis = analyzePR(pr, files);
+    const analysis = analyzePR({ files });
 
     // Post comment to PR
     await octokit.rest.issues.createComment({
       owner,
       repo,
-      issue_number: prNumber!,
+      issue_number: prNumber,
       body: analysis,
     });
-
-    // Set output
-    core.setOutput("result", analysis);
-
-    core.info("Analysis complete and comment posted");
   } catch (error) {
     if (error instanceof Error) {
       core.setFailed(error.message);
@@ -132,23 +41,6 @@ async function run(): Promise<void> {
       core.setFailed("Unknown error occurred");
     }
   }
-}
-
-function analyzePR(pr: any, files: any[]): string {
-  // Basic analysis - this is where you'd implement your custom logic
-  const fileCount = files.length;
-  const additions = files.reduce((sum, file) => sum + (file.additions || 0), 0);
-  const deletions = files.reduce((sum, file) => sum + (file.deletions || 0), 0);
-
-  return `## PR Analysis
-
-**Title:** ${pr.title}
-**Files Changed:** ${fileCount}
-**Additions:** +${additions}
-**Deletions:** -${deletions}
-
----
-*This analysis was generated by the Saltman GitHub Action*`;
 }
 
 // Execute the action
