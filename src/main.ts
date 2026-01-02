@@ -54,7 +54,8 @@ async function run(): Promise<void> {
       core.info(`User ${username} has ${permission.permission} access. Proceeding with action.`);
     } catch (error) {
       // If we can't check permissions (e.g., user is not a collaborator), skip
-      if (error instanceof Error && error.message.includes("404")) {
+      // Octokit errors have a `status` property for HTTP status codes
+      if (error && typeof error === "object" && "status" in error && error.status === 404) {
         core.info(
           `User ${username} is not a collaborator or does not have write access. Skipping action.`,
         );
