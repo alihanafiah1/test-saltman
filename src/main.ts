@@ -40,9 +40,11 @@ async function run(): Promise<void> {
       });
 
       const hasWriteAccess = permission.permission === "write" || permission.permission === "admin";
-      
+
       if (!hasWriteAccess) {
-        core.info(`User ${username} does not have write access to ${owner}/${repo}. Skipping action.`);
+        core.info(
+          `User ${username} does not have write access to ${owner}/${repo}. Skipping action.`,
+        );
         return;
       }
 
@@ -50,7 +52,9 @@ async function run(): Promise<void> {
     } catch (error) {
       // If we can't check permissions (e.g., user is not a collaborator), skip
       if (error instanceof Error && error.message.includes("404")) {
-        core.info(`User ${username} is not a collaborator or does not have write access. Skipping action.`);
+        core.info(
+          `User ${username} is not a collaborator or does not have write access. Skipping action.`,
+        );
         return;
       }
       throw error;
