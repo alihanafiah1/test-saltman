@@ -71,7 +71,7 @@ ${diff}
 Note: Follow the JSON schema field descriptions for details on how to populate each field (description, explanation, suggestion, codeSnippet, etc.).
 
 ## Output Priority:
-1. Vulnerabilities (sorted by severity: critical → high → medium → low)
+1. Vulnerabilities (sorted by severity: critical → high → medium → low -> info)
 2. Misconfigurations (sorted by severity)
 3. Best practices (sorted by severity)
 
