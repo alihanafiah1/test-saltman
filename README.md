@@ -4,6 +4,25 @@ A GitHub Action that analyzes code changes for security vulnerabilities and post
 
 > **Note:** Saltman is currently focused on security-related code review. Future versions may expand to cover other areas such as performance, code quality, and best practices.
 
+## Table of Contents
+
+- [Requirements](#requirements)
+- [Quick Start](#quick-start)
+- [Features](#features)
+- [Usage](#usage)
+  - [Publishing Your Action](#publishing-your-action)
+  - [PR Mode (Default)](#pr-mode-default)
+  - [Push Mode (Create Issues)](#push-mode-create-issues)
+  - [OpenAI-Compatible Provider](#openai-compatible-provider)
+  - [Inputs](#inputs)
+- [Development](#development)
+  - [Setup](#setup)
+  - [Build](#build)
+  - [Testing](#testing)
+- [Why GitHub Action Instead of GitHub App?](#why-github-action-instead-of-github-app)
+- [Limitations](#limitations)
+- [License](#license)
+
 ## Requirements
 
 - A GitHub repository
@@ -35,25 +54,6 @@ jobs:
           provider: openai
           api-key: ${{ secrets.OPENAI_API_KEY }}
 ```
-
-## Table of Contents
-
-- [Requirements](#requirements)
-- [Quick Start](#quick-start)
-- [Features](#features)
-- [Usage](#usage)
-  - [Publishing Your Action](#publishing-your-action)
-  - [PR Mode (Default)](#pr-mode-default)
-  - [Push Mode (Create Issues)](#push-mode-create-issues)
-  - [OpenAI-Compatible Provider](#openai-compatible-provider)
-  - [Inputs](#inputs)
-- [Development](#development)
-  - [Setup](#setup)
-  - [Build](#build)
-  - [Testing](#testing)
-- [Why GitHub Action Instead of GitHub App?](#why-github-action-instead-of-github-app)
-- [Limitations](#limitations)
-- [License](#license)
 
 ## Features
 
