@@ -189,6 +189,8 @@ async function run(): Promise<void> {
           });
         }
       }
+
+      return;
     }
 
     throw new Error(
