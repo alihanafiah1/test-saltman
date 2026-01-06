@@ -2,6 +2,8 @@
 
 A GitHub Action that analyzes code changes for security vulnerabilities and posts findings as PR comments or GitHub issues.
 
+![Saltman Preview Screenshot](./saltman-preview.png)
+
 > **Note:** Saltman is currently focused on security-related code review. Future versions may expand to cover other areas such as performance, code quality, and best practices.
 
 ## Table of Contents
