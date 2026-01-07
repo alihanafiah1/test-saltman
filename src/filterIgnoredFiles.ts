@@ -14,7 +14,10 @@ const NON_TEXT_EXTENSIONS = new Set([
   "jpg",
   "jpeg",
   "gif",
-  "svg",
+  // Note: SVG is intentionally excluded from this list because:
+  // - SVG files are text-based XML that can contain embedded JavaScript
+  // - They can include XSS vulnerabilities via <script> tags or event handlers
+  // - GitHub provides patches for SVG files (they're text), so they should be analyzed
   "webp",
   "ico",
   "bmp",
