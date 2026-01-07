@@ -51,7 +51,7 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - uses: adriangohjw/saltman@main
+      - uses: adriangohjw/saltman@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           provider: openai
@@ -105,7 +105,7 @@ Saltman is built with modern TypeScript and leverages the following technologies
 Before others can use your action, you need to:
 
 1. **Push your repository to GitHub** (make it public or ensure users have access)
-2. **Ensure your main branch is up to date** - users will reference `@main` to get the latest version
+2. **Create a version tag** - users will reference `@v1` (or your version tag) to get a stable version
 
 ### PR Mode (Default)
 
@@ -130,7 +130,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Saltman
-        uses: adriangohjw/saltman@main
+        uses: adriangohjw/saltman@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           provider: openai  # Must be either "openai", "anthropic", or "openai-compatible". OpenAI is recommended.
@@ -172,7 +172,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Saltman
-        uses: adriangohjw/saltman@main
+        uses: adriangohjw/saltman@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           provider: openai  # Must be either "openai", "anthropic", or "openai-compatible". OpenAI is recommended.
@@ -187,7 +187,7 @@ jobs:
             bun.lockb
 ```
 
-**Note:** Replace `adriangohjw/saltman@main` with your own repository path. Using `@main` will always use the latest commit on the main branch.
+**Note:** Replace `adriangohjw/saltman@v1` with your own repository path. Using `@v1` will use the v1 tag, providing a stable version reference.
 
 ### Model Selection
 
@@ -207,7 +207,7 @@ Example with model selection:
 
 ```yaml
 - name: Run Saltman
-  uses: adriangohjw/saltman@main
+  uses: adriangohjw/saltman@v1
   with:
     github-token: ${{ secrets.GITHUB_TOKEN }}
     provider: openai
@@ -240,7 +240,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Saltman
-        uses: adriangohjw/saltman@main
+        uses: adriangohjw/saltman@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           provider: openai-compatible  # Use OpenAI-compatible provider
