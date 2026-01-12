@@ -27,7 +27,7 @@ async function run(): Promise<void> {
     const inputTargetBranch = core.getInput("target-branch");
     const inputPingUsers = core.getInput("ping-users");
     const inputSeverityFilter = core.getInput("severity-filter");
-
+    // validasi untuk untuk input github 
     const {
       token,
       provider,
@@ -84,7 +84,7 @@ async function run(): Promise<void> {
 
       // Filter out files that match ignore patterns
       const filteredFiles = filterIgnoredFiles({ files, ignorePatterns });
-
+      // buat analisis pr
       const analysis = await analyzePR({
         files: filteredFiles,
         apiKey,
