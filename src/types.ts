@@ -15,6 +15,8 @@ export const IMPACT_VALUES = [
   "data_modification",
   "minimal",
 ] as const;
+
+// Cari bagian ini di src/types.ts
 export const SECURITY_CATEGORY_VALUES = [
   "injection",
   "authentication",
@@ -30,6 +32,9 @@ export const SECURITY_CATEGORY_VALUES = [
   "config",
   "logging",
   "api",
+  "integrity",      // Tambahan baru
+  "syntax",         // Tambahan baru
+  "logic_error",    // Tambahan baru
   "other",
 ] as const;
 

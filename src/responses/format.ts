@@ -18,6 +18,7 @@ export const getSeverityEmoji = (severity: Severity): string => {
 
 export const getSecurityCategoryLabel = (category: SecurityCategory | null | undefined): string => {
   if (!category) return "";
+
   switch (category) {
     case "injection":
       return "Injection";
@@ -47,9 +48,18 @@ export const getSecurityCategoryLabel = (category: SecurityCategory | null | und
       return "Logging";
     case "api":
       return "API Security";
+    case "integrity":     // Kasus baru
+      return "Code Integrity";
+    case "syntax":        // Kasus baru
+      return "Syntax";
+    case "logic_error":   // Kasus baru
+      return "Potential Break";
     case "other":
       return "Security";
   }
+
+  // Tambahkan baris ini di akhir untuk memperbaiki error TS2366
+  return "";
 };
 
 export const getExploitabilityLabel = (
