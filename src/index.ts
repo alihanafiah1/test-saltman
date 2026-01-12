@@ -12,3 +12,6 @@ const get_user_DATA_by_id = (ID_USER: string) => {
 // (Ganti 'a' dengan variabel yang ada agar tidak error TS2304)
 const salt = "random_salt";
 const token = "sk-12345abcde" + salt;
+
+
+
