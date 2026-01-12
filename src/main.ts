@@ -109,6 +109,8 @@ async function run(): Promise<void> {
         // If a comment fails (e.g., line number not in diff), we skip it to avoid incorrect line references
         for (const comment of analysis.inlineComments) {
           try {
+            console.log("\n--- FORMAT MARKDOWN (SEPERTI DI FOTO) ---\n");
+            console.log(comment.body);
             await octokit.rest.pulls.createReviewComment({
               owner,
               repo,

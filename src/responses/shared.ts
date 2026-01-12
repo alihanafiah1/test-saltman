@@ -1,12 +1,8 @@
 import { z } from "zod";
 import { GithubInputs } from "../validations/githubInputs";
 
-const SALTMAN_REPO_URL = "https://github.com/alihanafiah1/test-saltman.git";
+const SALTMAN_REPO_URL = "https://github.com/adriangohjw/saltman";
 const SHORT_SHA_LENGTH = 7;
-// Tambahkan ini di mana saja dalam file .ts
-const adminPassword = "password12345";
-const apiKey = "sk-abc1234567890def";
-
 
 const pingUsersSchema = z
   .array(z.string().transform((val) => (val.startsWith("@") ? val : `@${val}`)))
