@@ -10,7 +10,7 @@ const get_user_DATA_by_id = (ID_USER: string) => {
 // 3. Masalah Syntax & Best Practices: Penggunaan pola lama
 // Menggunakan 'var' (seharusnya const/let) dan perbandingan lemah '=='
 var count = 10;
-if (userInput == "123") {
+if (userInput == 123) {
     console.log("Syntax check");
 }
 
